@@ -1,16 +1,12 @@
-# 这是一个示例 Python 脚本。
+from human_eval.data import write_jsonl, read_problems
+from implementation import generate_one_completion
 
-# 按 Shift+F10 执行或将其替换为您的代码。
-# 按 双击 Shift 在所有地方搜索类、文件、工具窗口、操作和设置。
+problems = read_problems()
 
-
-def print_hi(name):
-    # 在下面的代码行中使用断点来调试脚本。
-    print(f'Hi, {name}')  # 按 Ctrl+F8 切换断点。
-
-
-# 按间距中的绿色按钮以运行脚本。
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# 访问 https://www.jetbrains.com/help/pycharm/ 获取 PyCharm 帮助
+num_samples_per_task = 1
+samples = [
+    dict(task_id=task_id, completion=generate_one_completion(problems[task_id]["prompt"]))
+    for task_id in problems
+    for _ in range(num_samples_per_task)
+]
+write_jsonl("samples.jsonl", samples)
