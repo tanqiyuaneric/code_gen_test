@@ -19,14 +19,22 @@ FIVE_SHOT_PROMPT = ''
 for key in keys[:5]:
     FIVE_SHOT_PROMPT += problems[key]['prompt'] + problems[key]['canonical_solution'] + '\n\n'
 
-
-with open('planning_prompt.txt', 'r') as file:
+with open('planning_prompt.txt', 'r', encoding='utf-8') as file:
     # 2. 读取文件内容
     PLANNING_PROMPT = file.read()
 
 
+def self_planning(model_name, prompt):
+    planning_prompt = planning(model_name, prompt)
+    planning_prompt = planning_prompt[:planning_prompt.find('"""')] + '"""'
+    prompt = prompt[:-4] + planning_prompt
+    # print(prompt)
+    return crop_string(completion(model_name, prompt))
+
+
 def planning(model_name, prompt):
-    print(prompt := PLANNING_PROMPT+prompt[:-4])
+    prompt = PLANNING_PROMPT + prompt[:-4] + 'Let’s think step by step.'
+    # print(prompt)
     return completion(model_name, prompt)
 
 
@@ -38,7 +46,7 @@ def crop_string(input_string):
     return input_string[:index2]
 
 
-def completion(model_name, prompt, max_length=600, top_p=0.9, temperature=0.2):
+def completion(model_name, prompt, max_length=300, top_p=0.9, temperature=0.2):
     if 'codegeex' in model_name:
         return codegeex(prompt, max_length, top_p, temperature)
     elif 'pro' in model_name:
@@ -81,5 +89,5 @@ def codegeex(prompt, max_length, top_p, temperature):
 
 
 if __name__ == '__main__':
-    result = planning('chatglm_pro', problems[keys[0]]['prompt'])
+    result = self_planning('vicuna-7b-v1.5', problems[keys[0]]['prompt'])
     print(f'response: {result}')
