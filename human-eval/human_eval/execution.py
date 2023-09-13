@@ -40,6 +40,7 @@ def check_correctness(problem: Dict, completion: str, timeout: float,
                     problem["test"] + "\n" +
                     f"check({problem['entry_point']})"
             )
+            print(check_program)
 
             try:
                 exec_globals = {}

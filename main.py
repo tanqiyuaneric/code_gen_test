@@ -4,13 +4,13 @@ from human_eval.data import write_jsonl, read_problems
 from implementation import *
 
 problems = read_problems()
-model = 'chatglm2-6b'
+model = 'codegeex2-6b'
 
-num_samples_per_task = 3
+num_samples_per_task = 1
 
 samples = []
 
-keys = list(problems.keys())
+keys = list(problems.keys())# [10:]
 
 # 计算总迭代次数
 total_iterations = num_samples_per_task * len(keys)
@@ -19,7 +19,7 @@ total_iterations = num_samples_per_task * len(keys)
 with tqdm(total=total_iterations, desc='Generating samples') as pbar:
     for _ in range(num_samples_per_task):
         for task_id in keys:
-            samples.append(dict(task_id=task_id, completion=direct_generation(problems[task_id]["prompt"], model)))
+            samples.append(dict(task_id=task_id, completion=codegeex('#python\n'+problems[task_id]["prompt"],model)))
             pbar.update(1)  # 更新进度条
 
-write_jsonl("samples.jsonl", samples)
+write_jsonl(f"{model}_dirn1.jsonl", samples)
