@@ -28,7 +28,7 @@ def self_planning(model_name, prompt):
     planning_prompt = planning(model_name, prompt)
     planning_prompt = planning_prompt[:planning_prompt.find('"""')] + '"""'
     prompt = prompt[:-4] + planning_prompt
-    # print(prompt)
+    print(prompt)
     return crop_string(completion(model_name, prompt))
 
 
@@ -36,6 +36,10 @@ def planning(model_name, prompt):
     prompt = PLANNING_PROMPT + prompt[:-4] + 'Let’s think step by step.'
     # print(prompt)
     return completion(model_name, prompt)
+
+def self_collaboration(prompt):
+    code = ''
+    white_board = []
 
 
 def crop_string(input_string):
@@ -46,7 +50,7 @@ def crop_string(input_string):
     return input_string[:index2]
 
 
-def completion(model_name, prompt, max_length=300, top_p=0.9, temperature=0.2):
+def completion(model_name, prompt, max_length=300, top_p=0.9, temperature=0.0):
     if 'codegeex' in model_name:
         return codegeex(prompt, max_length, top_p, temperature)
     elif 'pro' in model_name:
