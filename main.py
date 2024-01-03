@@ -3,7 +3,7 @@ from human_eval.data import write_jsonl
 from implementation import *
 
 problems = read_problems()
-model = 'chatglm2-6b'
+model = 'chatglm2-6b'  # replace with other model name to test different models
 
 num_samples_per_task = 1
 
@@ -11,7 +11,7 @@ samples = []
 
 keys = list(problems.keys())
 
-total_iterations = num_samples_per_task * len(keys)*3
+total_iterations = num_samples_per_task * len(keys) * 3
 
 with tqdm(total=total_iterations, desc='Generating samples') as pbar:
     for _ in range(num_samples_per_task):

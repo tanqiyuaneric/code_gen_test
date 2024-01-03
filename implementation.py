@@ -7,8 +7,8 @@ import zhipuai
 from transformers import AutoTokenizer, AutoModel
 from human_eval.data import read_problems
 
-openai.api_key = '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'
-zhipuai.api_key = '2c700bf3ba6419b8ea37f0602baf527c.7vBfCGkpob2Y8Qzr'
+openai.api_key = ''  # api kay not shown
+zhipuai.api_key = ''  # api kay not shown
 
 problems = read_problems()
 keys = list(problems.keys())[:10]
