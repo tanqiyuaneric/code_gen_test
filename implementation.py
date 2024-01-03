@@ -13,14 +13,8 @@ zhipuai.api_key = '2c700bf3ba6419b8ea37f0602baf527c.7vBfCGkpob2Y8Qzr'
 problems = read_problems()
 keys = list(problems.keys())[:10]
 
-ONE_SHOT_PROMPT = problems[keys[0]]['prompt'] + problems[keys[0]]['canonical_solution']
-
-FIVE_SHOT_PROMPT = ''
-for key in keys[:5]:
-    FIVE_SHOT_PROMPT += problems[key]['prompt'] + problems[key]['canonical_solution'] + '\n\n'
 
 with open('planning_prompt.txt', 'r', encoding='utf-8') as file:
-    # 2. 读取文件内容
     PLANNING_PROMPT = file.read()
 
 
@@ -34,12 +28,11 @@ def self_planning(model_name, prompt):
 
 def planning(model_name, prompt):
     prompt = PLANNING_PROMPT + prompt[:-4] + 'Let’s think step by step.'
-    # print(prompt)
     return completion(model_name, prompt)
 
+
 def self_collaboration(prompt):
-    code = ''
-    white_board = []
+    raise NotImplementedError
 
 
 def crop_string(input_string):
